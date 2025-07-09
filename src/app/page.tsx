@@ -2,12 +2,6 @@ import { Suspense } from "react";
 import AdvocatesTable from "./components/advocates-table";
 import Search from "./components/search";
 
-const getAdvocates = async () => {
-  const res = await fetch("http://localhost:3000/api/advocates");
-  const { data } = await res.json();
-  return data;
-};
-
 export default async function Home() {
   return (
     <main>
@@ -17,7 +11,7 @@ export default async function Home() {
 
       <div className="container mx-auto py-4 flex flex-col gap-4 h-[calc(100vh-56px)]">
         <Search />
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div>Loading advocates...</div>}>
           <AdvocatesTable />
         </Suspense>
       </div>
