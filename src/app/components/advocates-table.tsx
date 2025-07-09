@@ -1,18 +1,40 @@
+"use client";
+
 import { Advocate } from "@/db/seed/advocates";
+import { useSearchParams } from "next/navigation";
 
-const getAdvocates = async () => {
-  const res = await fetch("http://localhost:3000/api/advocates");
-  const { data } = await res.json();
-  return data;
-};
+export default function AdvocatesTable({
+  advocates,
+}: {
+  advocates: Advocate[];
+}) {
+  const searchParams = useSearchParams();
 
-export default async function AdvocatesTable() {
-  const advocates = await getAdvocates();
-  const filteredAdvocates = advocates;
+  const searchTerm = searchParams.get("q");
+  const filteredAdvocates =
+    searchTerm === "" || !searchTerm
+      ? advocates
+      : advocates.filter((advocate: Advocate) => {
+          if (
+            advocate.firstName.toLowerCase().includes(searchTerm) ||
+            advocate.lastName.toLowerCase().includes(searchTerm) ||
+            advocate.city.toLowerCase().includes(searchTerm) ||
+            advocate.degree.toLowerCase().includes(searchTerm) ||
+            advocate.specialties.some((specialty) =>
+              specialty.toLowerCase().includes(searchTerm)
+            )
+          ) {
+            return true;
+          } else if (Number.isNaN(Number(searchTerm))) {
+            return false;
+          } else {
+            return advocate.yearsOfExperience === Number(searchTerm);
+          }
+        });
 
   return (
     <section className="bg-gray-200 overflow-auto border border-black rounded-md">
-      <table>
+      <table className="w-full">
         <thead className="sticky top-0 bg-gray-300">
           <tr>
             <th className="border border-black rounded-md border-t-0 border-l-0">
@@ -54,8 +76,8 @@ export default async function AdvocatesTable() {
                 </td>
                 <td className="border border-black rounded-md p-2">
                   <ul className="list-disc list-inside">
-                    {advocate.specialties.map((s: string) => (
-                      <li>{s}</li>
+                    {advocate.specialties.map((s: string, index: number) => (
+                      <li key={index}>{s}</li>
                     ))}
                   </ul>
                 </td>

@@ -8,7 +8,7 @@ export default function Search() {
   const searchParams = useSearchParams();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     const params = new URLSearchParams(searchParams);
     if (value === "") {
       params.delete("q");
