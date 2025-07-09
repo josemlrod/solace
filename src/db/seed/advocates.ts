@@ -1,6 +1,17 @@
 import db from "..";
 import { advocates } from "../schema";
 
+export interface Advocate {
+  id?: number;
+  firstName: string;
+  lastName: string;
+  city: string;
+  degree: string;
+  specialties: string[];
+  yearsOfExperience: number;
+  phoneNumber: number;
+}
+
 const specialties = [
   "Bipolar",
   "LGBTQ",
