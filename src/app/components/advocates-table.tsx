@@ -1,3 +1,5 @@
+import { Advocate } from "@/db/seed/advocates";
+
 const getAdvocates = async () => {
   const res = await fetch("http://localhost:3000/api/advocates");
   const { data } = await res.json();
@@ -35,9 +37,9 @@ export default async function AdvocatesTable() {
           </tr>
         </thead>
         <tbody>
-          {filteredAdvocates.map((advocate) => {
+          {filteredAdvocates.map((advocate: Advocate, index: number) => {
             return (
-              <tr>
+              <tr key={index}>
                 <td className="border border-black rounded-md text-center border-l-0">
                   {advocate.firstName}
                 </td>
@@ -52,7 +54,7 @@ export default async function AdvocatesTable() {
                 </td>
                 <td className="border border-black rounded-md p-2">
                   <ul className="list-disc list-inside">
-                    {advocate.specialties.map((s) => (
+                    {advocate.specialties.map((s: string) => (
                       <li>{s}</li>
                     ))}
                   </ul>
